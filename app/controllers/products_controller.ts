@@ -5,8 +5,9 @@ export default class ProductsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {
-    return await Product.all()
+  async index({ view }: HttpContext) {
+    const products = await Product.all()
+    return view.render('pages/backend/products/index', { products }) 
   }
 
   /**

@@ -7,8 +7,9 @@ export default class BrandsController {
   /**
    * Display a list of resource
    */
-  async index({}: HttpContext) {
-    return await Brand.all()
+  async index({ view }: HttpContext) {
+    const brands = await Brand.all()
+    return view.render('pages/backend/brands/index', { brands }) 
   }
 
   /**
