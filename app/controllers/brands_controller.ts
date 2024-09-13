@@ -2,6 +2,12 @@
 
 import Brand from '#models/brand'
 import type { HttpContext } from '@adonisjs/core/http'
+import app from '@adonisjs/core/services/app'
+import {
+  createBrandValidator,
+  updateBrandValidator
+} from '#validators/brand_validator'
+
 
 export default class BrandsController {
   /**
@@ -15,17 +21,30 @@ export default class BrandsController {
   /**
    * Display form to create a new record
    */
-  async create({}: HttpContext) {}
+  async create({ view }: HttpContext) {
+    return view.render('pages/backend/brands/create') 
+  }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
-    const brand = new Brand()
-    brand.name = request.input('name')
-    brand.image = request.input('image')
+  async store({ request, response, session }: HttpContext) {
+    const payload = await request.validateUsing(createBrandValidator)
+
+    const brand = new Brand()    
+    brand.name = payload.name
+   
+    brand.image = payload.image.clientName
+    await payload.image.move(app.makePath('storage/uploads'))
+
     await brand.save()
-    return brand
+
+    session.flash('notification', {
+      type: 'success',
+      message: 'Se guardo correctamente la marca'
+    })
+  
+    return response.redirect().toPath('/brands')
   }
 
   /**
@@ -38,7 +57,10 @@ export default class BrandsController {
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params , view }: HttpContext) {
+    const brand = await Brand.findOrFail(params.id)
+    return view.render('pages/backend/brands/edit', { brand } ) 
+  }
 
   /**
    * Handle form submission for the edit action

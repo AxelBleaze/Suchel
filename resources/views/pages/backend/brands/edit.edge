@@ -1,0 +1,56 @@
+@backend.app({ title: 'Editar Marca' })
+<div class="col-md-12">
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Editar Marca</h6>
+            <div class="dropdown no-arrow">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                    aria-labelledby="dropdownMenuLink">
+                    <div class="dropdown-header">Dropdown Header:</div>
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <form method="post" action="{{ route('brands.update', { id:brand.id }) }}" enctype="multipart/form-data">
+                {{ csrfField() }}
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') || brand.name }}">
+                        @inputError('name')
+                            @each(message in $messages)
+                                <p class="text-danger">{{ message }}</p>
+                            @end
+                        @end
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="image" class="form-label">Imagen</label>
+                        <input class="form-control" type="file" id="image" name="image">
+                        @inputError('name')
+                            @each(message in $messages)
+                                <p class="text-danger">{{ message }}</p>
+                            @end
+                        @end
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@end
+

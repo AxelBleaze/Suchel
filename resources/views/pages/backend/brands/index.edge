@@ -12,7 +12,7 @@
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                     aria-labelledby="dropdownMenuLink">
                     <div class="dropdown-header">Dropdown Header:</div>
-                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="/brands/create">Nueva Marca</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
@@ -30,6 +30,7 @@
                             <th>Imagen</th>
                             <th>Creado</th>
                             <th>Actualizado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,10 +38,15 @@
                         <tr>
                             <td>{{ brand.id }}</td>
                             <td>{{ brand.name }}</td>
-                            <td>{{ brand.image }}</td>
+                            <td>
+                                <img src="{{ brand.image }}" alt="{{ brand.image }}">
+                            </td>
                             <td>{{ brand.created_at }}</td>
                             <td>{{ brand.updated_at }}</td>
-                        </tr>                        
+                            <td>
+                                <a href="{{ route('brands.edit', { id:brand.id }) }}">Editar</a>
+                            </td>
+                        </tr>
                         @end
                     </tbody>
                     <tfoot>
@@ -50,8 +56,9 @@
                             <th>Imagen</th>
                             <th>Creado</th>
                             <th>Actualizado</th>
+                            <th>Acciones</th>
                         </tr>
-                    </tfoot>                
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -60,7 +67,7 @@
 @end
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#brands').DataTable();
-      });
+    });
 </script>
