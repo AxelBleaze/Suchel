@@ -15,36 +15,50 @@ export default class BrandsController {
    */
   async index({ view }: HttpContext) {
     const brands = await Brand.all()
-    return view.render('pages/backend/brands/index', { brands }) 
+    return view.render('pages/backend/brands/index', { brands })
   }
 
   /**
    * Display form to create a new record
    */
   async create({ view }: HttpContext) {
-    return view.render('pages/backend/brands/create') 
+    return view.render('pages/backend/brands/create')
   }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response, session }: HttpContext) {
-    const payload = await request.validateUsing(createBrandValidator)
+  async store({ request }: HttpContext) {
+    //const payload = await request.validateUsing(createBrandValidator)
 
-    const brand = new Brand()    
-    brand.name = payload.name
-   
-    brand.image = payload.image.clientName
-    await payload.image.move(app.makePath('storage/uploads'))
+    const brand = new Brand()
+    brand.name = request.input('name')
+    brand.image = request.input('image')
+    brand.disclaimer = request.input('disclaimer')
+    brand.color_description = request.input('color_description')
+    brand.expedient = request.input('expedient')
+    brand.request_date = request.input('request_date')
+    brand.priorities = request.input('priorities')
+    brand.niza_class = request.input('niza_class')
+    brand.title = request.input('title')
+    brand.direction = request.input('direction')
+    brand.representative = request.input('representative')
+    brand.administrative_status = request.input('administrative_status')
+    brand.publication = request.input('publication')
+    brand.registry_number = request.input('registry_number')
+    brand.registry_date = request.input('registry_date')
+    brand.validity_date = request.input('validity_date')
+    brand.expiration_date = request.input('expiration_date')
+    //await payload.image.move(app.makePath('storage/uploads'))
 
     await brand.save()
 
-    session.flash('notification', {
+    /*session.flash('notification', {
       type: 'success',
       message: 'Se guardo correctamente la marca'
-    })
-  
-    return response.redirect().toPath('/brands')
+    })*/
+
+    return brand//response.redirect().toPath('/brands')
   }
 
   /**
@@ -59,7 +73,7 @@ export default class BrandsController {
    */
   async edit({ params , view }: HttpContext) {
     const brand = await Brand.findOrFail(params.id)
-    return view.render('pages/backend/brands/edit', { brand } ) 
+    return view.render('pages/backend/brands/edit', { brand } )
   }
 
   /**
@@ -69,6 +83,21 @@ export default class BrandsController {
     const brand = await Brand.findOrFail(params.id)
     brand.name = request.input('name')
     brand.image = request.input('image')
+    brand.disclaimer = request.input('disclaimer')
+    brand.color_description = request.input('color_description')
+    brand.expedient = request.input('expedient')
+    brand.request_date = request.input('request_date')
+    brand.priorities = request.input('priorities')
+    brand.niza_class = request.input('niza_class')
+    brand.title = request.input('title')
+    brand.direction = request.input('direction')
+    brand.representative = request.input('representative')
+    brand.administrative_status = request.input('administrative_status')
+    brand.publication = request.input('publication')
+    brand.registry_number = request.input('registry_number')
+    brand.registry_date = request.input('registry_date')
+    brand.validity_date = request.input('validity_date')
+    brand.expiration_date = request.input('expiration_date')
     await brand.save()
     return brand
   }
